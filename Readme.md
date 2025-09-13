@@ -107,7 +107,7 @@ uvicorn main:app --reload
 
 Access the API at:
 
-- Base URL: http://127.0.0.1:8000
+- Base URL: https://stock-backend-07c7.onrender.com
 - Swagger UI: http://127.0.0.1:8000/docs 📜
 - ReDoc: http://127.0.0.1:8000/redoc 📄
 
@@ -141,7 +141,7 @@ Access the API at:
 ### 1. Create a Stock
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/stocks" \
+curl -X POST "https://stock-backend-07c7.onrender.com/stocks" \
 -H "Content-Type: application/json" \
 -d '{"date":"2025-09-14","trade_code":"AAPL","high":180.5,"low":178.2,"open":179.0,"close":180.0,"volume":50000}'
 ```
@@ -164,25 +164,25 @@ Response:
 ### 2. Get Stocks (with Pagination & Filter)
 
 ```bash
-curl "http://127.0.0.1:8000/stocks?last_id=0&limit=50&trade_code=AAPL"
+curl "https://stock-backend-07c7.onrender.com/stocks?last_id=0&limit=50&trade_code=AAPL"
 ```
 
 ### 3. Get Distinct Trade Codes
 
 ```bash
-curl "http://127.0.0.1:8000/stocks/trade-codes"
+curl "https://stock-backend-07c7.onrender.com/stocks/trade-codes"
 ```
 
 ### 4. Get Stock by ID
 
 ```bash
-curl "http://127.0.0.1:8000/stocks/1"
+curl "https://stock-backend-07c7.onrender.com/stocks/1"
 ```
 
 ### 5. Update Stock
 
 ```bash
-curl -X PUT "http://127.0.0.1:8000/stocks/1" \
+curl -X PUT "https://stock-backend-07c7.onrender.com/stocks/1" \
 -H "Content-Type: application/json" \
 -d '{"date":"2025-09-14","trade_code":"AAPL","high":181,"low":179,"open":179.5,"close":180.5,"volume":55000}'
 ```
@@ -190,7 +190,7 @@ curl -X PUT "http://127.0.0.1:8000/stocks/1" \
 ### 6. Delete Stock
 
 ```bash
-curl -X DELETE "http://127.0.0.1:8000/stocks/1"
+curl -X DELETE "https://stock-backend-07c7.onrender.com/stocks/1"
 ```
 
 Response:
