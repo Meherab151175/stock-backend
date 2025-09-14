@@ -13,8 +13,7 @@ app = FastAPI(title="Stock CRUD API")
 origins = [
     "http://localhost:3000",   # React dev server
     "http://127.0.0.1:3000",
-    # You can also add your deployed frontend domain
-    # "https://your-frontend-domain.com",
+    "https://stock-fronted.vercel.app",
 ]
 
 app.add_middleware(
