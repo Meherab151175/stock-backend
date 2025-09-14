@@ -39,7 +39,7 @@ A high-performance FastAPI backend application for managing stock data, built wi
 ### Clone the Repository:
 
 ```bash
-git clone https://github.com/yourusername/stock-crud-api.git
+git clone https://github.com/Meherab151175/stock-backend.git
 cd stock-crud-api
 ```
 
@@ -47,8 +47,7 @@ cd stock-crud-api
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # Linux/macOS
-venv\Scripts\activate     # Windows
+venv\Scripts\activate
 ```
 
 ### Install Dependencies:
