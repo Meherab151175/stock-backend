@@ -37,7 +37,7 @@ A high-performance FastAPI backend application for managing stock data, built wi
 ### Clone the Repository:
 
 ```bash
-git clone https://github.com/yourusername/stock-crud-api.git
+git clone https://github.com/Meherab151175/stock-backend.git
 cd stock-crud-api
 ```
 
@@ -45,7 +45,6 @@ cd stock-crud-api
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # Linux/macOS
 venv\Scripts\activate     # Windows
 ```
 
@@ -83,14 +82,14 @@ Access the API at:
 
 # API Endpoints 📡
 
-| Method | Endpoint            | Description                                | Parameters                                      |
-| ------ | ------------------- | ------------------------------------------ | ----------------------------------------------- |
-| POST   | /stocks             | Create a new stock record                  | Stock data (JSON)                               |
+| Method | Endpoint            | Description                                | Parameters                                       |
+| ------ | ------------------- | ------------------------------------------ | ------------------------------------------------ |
+| POST   | /stocks             | Create a new stock record                  | Stock data (JSON)                                |
 | GET    | /stocks             | Retrieve stocks (with pagination & filter) | skip (opt), limit (default=10), trade_code (opt) |
-| GET    | /stocks/trade-codes | Retrieve distinct trade codes              | None                                            |
-| GET    | /stocks/{stock_id}  | Retrieve a stock by ID                     | stock_id (UUID)                                 |
-| PUT    | /stocks/{stock_id}  | Update a stock by ID                       | stock_id (UUID), Stock data (JSON)              |
-| DELETE | /stocks/{stock_id}  | Delete a stock by ID                       | stock_id (UUID)                                 |
+| GET    | /stocks/trade-codes | Retrieve distinct trade codes              | None                                             |
+| GET    | /stocks/{stock_id}  | Retrieve a stock by ID                     | stock_id (UUID)                                  |
+| PUT    | /stocks/{stock_id}  | Update a stock by ID                       | stock_id (UUID), Stock data (JSON)               |
+| DELETE | /stocks/{stock_id}  | Delete a stock by ID                       | stock_id (UUID)                                  |
 
 ### Stock Schema Example:
 
@@ -110,6 +109,7 @@ Access the API at:
 # Example Requests 🌐
 
 ### 1. Create a Stock
+
 ```bash
 curl -X POST "https://stock-backend-07c7.onrender.com/stocks" \
 -H "Content-Type: application/json" \
@@ -132,6 +132,7 @@ Response:
 ```
 
 ### 2. Get Stocks (with Pagination & Filter)
+
 ```bash
 curl "https://stock-backend-07c7.onrender.com/stocks?skip=0&limit=10&trade_code=AAPL"
 ```
@@ -143,11 +144,13 @@ curl "https://stock-backend-07c7.onrender.com/stocks/trade-codes"
 ```
 
 ### 4. Get Stock by ID
+
 ```bash
 curl "https://stock-backend-07c7.onrender.com/stocks/123e4567-e89b-12d3-a456-426614174000"
 ```
 
 ### 5. Update Stock
+
 ```bash
 curl -X PUT "https://stock-backend-07c7.onrender.com/stocks/123e4567-e89b-12d3-a456-426614174000" \
 -H "Content-Type: application/json" \
@@ -155,6 +158,7 @@ curl -X PUT "https://stock-backend-07c7.onrender.com/stocks/123e4567-e89b-12d3-a
 ```
 
 ### 6. Delete Stock
+
 ```bash
 curl -X DELETE "https://stock-backend-07c7.onrender.com/stocks/123e4567-e89b-12d3-a456-426614174000"
 ```
