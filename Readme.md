@@ -1,14 +1,13 @@
 # Stock CRUD API 📈
 
-A high-performance FastAPI backend application for managing stock data, built with SQLModel and PostgreSQL. This API supports CRUD operations, pagination, filtering by trade code, and fetching distinct trade codes. It's designed to integrate seamlessly with a frontend like React with CORS enabled. 🚀
+A high-performance FastAPI backend application for managing stock data, built with FastAPI and JSON file storage. This API supports CRUD operations, pagination, filtering by trade code, and fetching distinct trade codes. It's designed to integrate seamlessly with a frontend like React with CORS enabled. 🚀
 
 # Table of Contents 📋
 
 - Features
 - Tech Stack
 - Installation
-- Environment Variables
-- Database Setup
+- Data Storage
 - Running the App
 - API Endpoints
 - Example Requests
@@ -24,14 +23,13 @@ A high-performance FastAPI backend application for managing stock data, built wi
 - Trade Code Filtering: Filter stock data by trade_code for targeted queries. 🔍
 - Distinct Trade Codes: Retrieve unique trade codes for streamlined frontend integration. 📊
 - CORS Support: Seamlessly integrates with React or other frontend frameworks. 🌐
-- PostgreSQL & SQLModel: Robust database management with a modern ORM. 🗄️
+- JSON File Storage: Simple and portable data storage using a JSON file. 🗄️
 
 # Tech Stack 🛠️
 
 - Backend: FastAPI – High-performance, asynchronous API framework. ⚡
-- Database: PostgreSQL – Scalable and reliable relational database. 🐘
-- ORM: SQLModel – Combines SQLAlchemy and Pydantic for robust data handling. 📊
-- Environment Variables: python-dotenv – Manage configuration securely. 🔑
+- Data Storage: JSON – Simple file-based data storage. 📁
+- Data Validation: Pydantic – Data validation and settings management. 📊
 - Server: Uvicorn – ASGI server for running FastAPI. 🚀
 
 # Installation ⚙️
@@ -57,45 +55,17 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 ```
 
-# Environment Variables 🔑
+# Data Storage 🗄️
 
-Create a `.env` file in the project root:
+This application uses a JSON file (`stock_market_data.json`) for data storage instead of a traditional database. The file is automatically created if it doesn't exist.
 
-```bash
-touch .env
-```
+Key benefits of this approach:
 
-Add the PostgreSQL database URL (replace with your credentials):
+1. Simplicity: No database setup required
+2. Portability: Easy to move or share the entire dataset
+3. Transparency: Data structure is human-readable
 
-```env
-DATABASE_URL=postgresql://username:password@host:port/dbname
-```
-
-Optionally, copy the example configuration:
-
-```bash
-cp .env.example .env
-```
-
-`.env.example`:
-
-```env
-DATABASE_URL=postgresql://username:password@host:port/dbname
-```
-
-# Database Setup 🗄️
-
-1. Ensure PostgreSQL is installed and running.
-
-2. Create a database for the application.
-
-3. The API automatically creates tables on startup using:
-
-```python
-SQLModel.metadata.create_all(engine)
-```
-
-**Note:** Ensure your PostgreSQL credentials in `.env` are correct to avoid connection errors.
+The application handles all CRUD operations by reading from and writing to this JSON file.
 
 # Running the App 🚀
 
@@ -113,19 +83,20 @@ Access the API at:
 
 # API Endpoints 📡
 
-| Method | Endpoint            | Description                                | Parameters                                           |
-| ------ | ------------------- | ------------------------------------------ | ---------------------------------------------------- |
-| POST   | /stocks             | Create a new stock record                  | Stock data (JSON)                                    |
-| GET    | /stocks             | Retrieve stocks (with pagination & filter) | last_id (opt), limit (default=100), trade_code (opt) |
-| GET    | /stocks/trade-codes | Retrieve distinct trade codes              | None                                                 |
-| GET    | /stocks/{stock_id}  | Retrieve a stock by ID                     | stock_id                                             |
-| PUT    | /stocks/{stock_id}  | Update a stock by ID                       | stock_id, Stock data (JSON)                          |
-| DELETE | /stocks/{stock_id}  | Delete a stock by ID                       | stock_id                                             |
+| Method | Endpoint            | Description                                | Parameters                                      |
+| ------ | ------------------- | ------------------------------------------ | ----------------------------------------------- |
+| POST   | /stocks             | Create a new stock record                  | Stock data (JSON)                               |
+| GET    | /stocks             | Retrieve stocks (with pagination & filter) | skip (opt), limit (default=10), trade_code (opt) |
+| GET    | /stocks/trade-codes | Retrieve distinct trade codes              | None                                            |
+| GET    | /stocks/{stock_id}  | Retrieve a stock by ID                     | stock_id (UUID)                                 |
+| PUT    | /stocks/{stock_id}  | Update a stock by ID                       | stock_id (UUID), Stock data (JSON)              |
+| DELETE | /stocks/{stock_id}  | Delete a stock by ID                       | stock_id (UUID)                                 |
 
 ### Stock Schema Example:
 
 ```json
 {
+  "id": "123e4567-e89b-12d3-a456-426614174000",
   "date": "2025-09-14",
   "trade_code": "AAPL",
   "high": 180.5,
@@ -139,18 +110,17 @@ Access the API at:
 # Example Requests 🌐
 
 ### 1. Create a Stock
-
 ```bash
 curl -X POST "https://stock-backend-07c7.onrender.com/stocks" \
 -H "Content-Type: application/json" \
--d '{"date":"2025-09-14","trade_code":"AAPL","high":180.5,"low":178.2,"open":179.0,"close":180.0,"volume":50000}'
+-d '{"id":"123e4567-e89b-12d3-a456-426614174000","date":"2025-09-14","trade_code":"AAPL","high":180.5,"low":178.2,"open":179.0,"close":180.0,"volume":50000}'
 ```
 
 Response:
 
 ```json
 {
-  "id": 1,
+  "id": "123e4567-e89b-12d3-a456-426614174000",
   "date": "2025-09-14",
   "trade_code": "AAPL",
   "high": 180.5,
@@ -162,9 +132,8 @@ Response:
 ```
 
 ### 2. Get Stocks (with Pagination & Filter)
-
 ```bash
-curl "https://stock-backend-07c7.onrender.com/stocks?last_id=0&limit=50&trade_code=AAPL"
+curl "https://stock-backend-07c7.onrender.com/stocks?skip=0&limit=10&trade_code=AAPL"
 ```
 
 ### 3. Get Distinct Trade Codes
@@ -174,23 +143,20 @@ curl "https://stock-backend-07c7.onrender.com/stocks/trade-codes"
 ```
 
 ### 4. Get Stock by ID
-
 ```bash
-curl "https://stock-backend-07c7.onrender.com/stocks/1"
+curl "https://stock-backend-07c7.onrender.com/stocks/123e4567-e89b-12d3-a456-426614174000"
 ```
 
 ### 5. Update Stock
-
 ```bash
-curl -X PUT "https://stock-backend-07c7.onrender.com/stocks/1" \
+curl -X PUT "https://stock-backend-07c7.onrender.com/stocks/123e4567-e89b-12d3-a456-426614174000" \
 -H "Content-Type: application/json" \
--d '{"date":"2025-09-14","trade_code":"AAPL","high":181,"low":179,"open":179.5,"close":180.5,"volume":55000}'
+-d '{"id":"123e4567-e89b-12d3-a456-426614174000","date":"2025-09-14","trade_code":"AAPL","high":181,"low":179,"open":179.5,"close":180.5,"volume":55000}'
 ```
 
 ### 6. Delete Stock
-
 ```bash
-curl -X DELETE "https://stock-backend-07c7.onrender.com/stocks/1"
+curl -X DELETE "https://stock-backend-07c7.onrender.com/stocks/123e4567-e89b-12d3-a456-426614174000"
 ```
 
 Response:
@@ -206,9 +172,7 @@ Response:
 ```
 fastapi
 uvicorn
-sqlmodel
-psycopg2-binary
-python-dotenv
+pydantic
 ```
 
 Install using:
@@ -223,8 +187,6 @@ pip install -r requirements.txt
 venv/
 __pycache__/
 *.pyc
-.env
-*.sqlite
 .DS_Store
 ```
 
