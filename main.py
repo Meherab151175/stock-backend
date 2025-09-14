@@ -17,6 +17,7 @@ origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://stock-fronted.vercel.app",
+    "https://stock-fronted-dg9h.vercel.app/"
 ]
 
 app.add_middleware(
